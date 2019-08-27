@@ -114,17 +114,36 @@ namespace GradeBook.GradeBooks
             switch (letterGrade)
             {
                 case 'A':
-                    return 4;
+                    return ProcessGPA_BasedOnWeight(studentType, 4);
                 case 'B':
-                    return 3;
+                    return ProcessGPA_BasedOnWeight(studentType, 3);
                 case 'C':
-                    return 2;
+                    return ProcessGPA_BasedOnWeight(studentType, 2);
                 case 'D':
-                    return 1;
+                    return ProcessGPA_BasedOnWeight(studentType, 1);
                 case 'F':
                     return 0;
             }
             return 0;
+        }
+
+        protected virtual double ProcessGPA_BasedOnWeight(StudentType studentType, double standardGpa)
+        {
+            if (this.IsWeighted)
+            {
+                if (studentType == StudentType.DualEnrolled || studentType == StudentType.Honors)
+                {
+                    return standardGpa + 1.0;
+                }
+                else
+                {
+                    return standardGpa;
+                }
+            }
+            else
+            {
+                return standardGpa;
+            }
         }
 
         public virtual void CalculateStatistics()
